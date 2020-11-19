@@ -31,7 +31,7 @@ $> tox --devenv <venv_dir> -e py<xx>
 Where `venv_dir` is the directory where you want to create the virtual environment and `xx` can be `36`, `37` or `38` 
 depending on your preference of python3 version.
 
-An `marmita-demo` script should be created and available in the path, pointing to the local project files.
+A `marmita-demo` script should be created and available in the path, pointing to the local project files.
 The local installation only needs to be done again if the main method or the `setup.py` script changes.
 
 You can run all tests and pass the linter check on all the available python3 versions at once with:
@@ -44,6 +44,14 @@ Or you can just try one with:
 
 ```bash
 $> tox -e py<xx>
+```
+
+##### Run demo script
+
+Just to try that the installation process works and that integration works properly you can try:
+
+```bash
+$> tox -qe run
 ```
 
 ##### Release as python wheel
