@@ -18,45 +18,20 @@ from loguru import logger
 import jpype
 import jpype.imports
 
-logger.info("Initializing marmita connector...")
+if not jpype.isJVMStarted():
+    logger.info("Initializing marmita connector...")
 
-# Load needed jars from current dir
-base = f"{os.path.dirname(__file__)}/jars"
-jars = list(map(lambda f: f"{base}/{f}", os.listdir(base)))
+    # Load needed jars from current dir
+    _base = f"{os.path.dirname(__file__)}"
+    _jars_dir = f"{_base}/jars"
+    _jars = list(map(lambda f: f"{_jars_dir}/{f}", os.listdir(_jars_dir)))
 
-# Log ClassPath composition
-logger.info("ClassPath:")
-for jar in jars:
-    logger.info(f"    {jar}")
+    # Log ClassPath composition
+    logger.info("ClassPath:")
+    for jar in _jars:
+        logger.info(f"    {jar}")
 
-# Bootstrap a JVM
-jpype.startJVM(classpath=jars)
-
-# Import needed components
-from java.util import ArrayList  # noqa F405
-from marmita.sdk.PythonUtils import toSeq as _to_seq  # noqa F405
-from marmita.sdk.PythonUtils import toList as _to_list  # noqa F405
-from marmita.sdk.PythonUtils import toJavaList as _to_jlist  # noqa F405
-from marmita.sdk import Person, Dataframe, App  # noqa F405
-
-
-# Utility functions
-def as_seq(*args):
-    """
-    Creates a Scala Seq from arguments list
-    """
-    return _to_seq(ArrayList(args))
-
-
-def as_list(*args):
-    """
-    Creates a List Seq from arguments list
-    """
-    return _to_list(ArrayList(args))
-
-
-def as_jlist(seq):
-    """
-    Creates a JList from a Scala Seq
-    """
-    return _to_jlist(seq)
+    # Bootstrap a JVM
+    _jvmPath = jpype.getDefaultJVMPath()
+    logger.info(f"JVM used {_jvmPath}")
+    jpype.startJVM(_jvmPath, f"-Dlog4j.configurationFile={_base}/log4j/log4j2.xml", classpath=_jars)

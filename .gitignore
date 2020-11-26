@@ -1,6 +1,6 @@
 ### Python
 # marmita sdk must be created from sources
-marmita-sdk.jar
+sdk-0.1.0-SNAPSHOT-all.jar
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
